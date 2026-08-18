@@ -1,0 +1,30 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+.env
+
+# Backend generated files
+backend/data/uploads/
+backend/data/outputs/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large video files
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+*.flv
+*.wmv

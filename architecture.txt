@@ -1,0 +1,285 @@
+# 🔥 AI-Assisted Flame Analysis Platform (CV-First Architecture)
+
+## 1. Objective
+
+Build a web-based combustion analysis system that:
+
+* Detects flame boundaries from video
+* Computes physical metrics (area, speed, stability)
+* Visualizes results interactively
+* Allows future ML integration
+
+---
+
+## 2. System Overview
+
+### Pipeline
+
+User Upload → Backend Processing → CV Engine → Physics Engine → Data Storage → Visualization
+
+---
+
+## 3. Architecture Layers
+
+### 3.1 Frontend Layer (React)
+
+**Tech Stack:**
+
+* React (Vite/Next.js optional)
+* TailwindCSS
+* Chart.js / D3.js
+
+**Modules:**
+
+1. Upload Module
+
+   * Drag & drop video upload
+   * File validation
+
+2. Processing Dashboard
+
+   * Progress indicator
+   * Status updates via WebSocket
+
+3. Visualization Panel
+
+   * Video with contour overlay
+   * Graphs:
+
+     * Flame area vs time
+     * Flame speed vs time
+
+4. Export Module
+
+   * Download CSV
+   * Export plots
+
+---
+
+### 3.2 Backend Layer (FastAPI)
+
+**Responsibilities:**
+
+* File handling
+* Pipeline orchestration
+* Serving processed data
+
+**API Endpoints:**
+
+* POST /upload
+* POST /process
+* GET /results/{id}
+* GET /download/{id}
+
+**Processing Flow:**
+
+1. Save video
+2. Trigger processing job
+3. Store outputs
+4. Return results
+
+---
+
+### 3.3 CV Engine (Core Processing)
+
+**Tech:** OpenCV
+
+#### Step 1: Frame Extraction
+
+* Extract frames using OpenCV or FFmpeg
+
+#### Step 2: Preprocessing
+
+* Resize frames
+* Convert to HSV
+* Apply Gaussian blur
+
+#### Step 3: Flame Detection (Thresholding)
+
+* HSV range filtering
+* Binary mask generation
+
+#### Step 4: Post-processing
+
+* Morphological operations (open/close)
+* Noise removal
+
+#### Step 5: Contour Detection
+
+* Extract contours
+* Select largest contour
+
+#### Output:
+
+* Binary masks
+* Flame contours per frame
+
+---
+
+### 3.4 Physics Engine (Core Differentiator)
+
+**Inputs:**
+
+* Contours
+* Frame rate
+* Pixel-to-length scale
+
+#### Computations:
+
+1. Flame Area
+
+* Area enclosed by contour
+
+2. Flame Centroid
+
+* Using image moments
+
+3. Flame Speed
+
+* Displacement of centroid over time
+
+4. Perimeter
+
+* Length of contour
+
+5. Optional Metrics
+
+* Curvature estimation
+* Stability index
+
+#### Output Format:
+
+[
+{"time": 0.01, "area": 1200, "speed": 0.5},
+{"time": 0.02, "area": 1300, "speed": 0.6}
+]
+
+---
+
+### 3.5 Data Storage Layer
+
+**Options:**
+
+* Local storage (development)
+* Cloud (production):
+
+  * S3 (videos)
+  * PostgreSQL (results)
+
+---
+
+## 4. Processing Pipeline (Detailed)
+
+1. Upload video
+2. Extract frames
+3. Apply preprocessing
+4. Generate flame mask
+5. Extract contour
+6. Compute physics metrics
+7. Store results
+8. Send to frontend
+
+---
+
+## 5. Frontend Visualization Design
+
+### Panels:
+
+1. Video Player
+
+   * Overlay contour
+
+2. Graph Panel
+
+   * Area vs Time
+   * Speed vs Time
+
+3. Metrics Panel
+
+   * Average speed
+   * Max area
+
+---
+
+## 6. ML Integration (Future Phase)
+
+### Replace:
+
+Threshold-based detection → ML segmentation
+
+### Options:
+
+* U-Net
+* DeepLabV3
+
+### Integration Point:
+
+mask = model.predict(frame)
+
+---
+
+## 7. Deployment Architecture
+
+Frontend: Vercel
+Backend: FastAPI (Render/AWS)
+Storage: S3 + PostgreSQL
+
+---
+
+## 8. Execution Roadmap
+
+### Week 1:
+
+* Backend setup
+* Upload system
+
+### Week 2:
+
+* Frame extraction
+* Basic CV detection
+
+### Week 3:
+
+* Contour + physics
+
+### Week 4:
+
+* Dashboard UI
+
+### Week 5:
+
+* Optimization
+
+---
+
+## 9. Future Enhancements
+
+* Real-time processing
+* Multi-flame detection
+* Flame classification
+* Physics-informed ML
+
+---
+
+## 10. Final Positioning
+
+This system evolves into:
+"AI-assisted combustion diagnostics platform"
+
+Combining:
+
+* Computer vision
+* Physics modeling
+* Web-based analytics
+
+---
+
+## 11. Key Advantage
+
+Even without ML, this system is:
+
+* Functional
+* Research-relevant
+* Extendable
+
+ML becomes an upgrade, not a dependency.
